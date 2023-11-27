@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+// Function to calculate the factorial of a number
+unsigned long long factorial_iterative(int n) {
+    unsigned long long result = 1;
+    
+    for (int i = 1; i <= n; ++i) {
+        result *= i;
+    }
+    
+    return result;
+}
+
+int main() {
+    // Example usage
+    int input_number = 3;
+    unsigned long long output_factorial = factorial_iterative(input_number);
+    
+    printf("The factorial of %d is: %llu\n", input_number, output_factorial);
+    
+    return 0;
+}
