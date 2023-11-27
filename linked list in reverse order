@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure to represent a node in the linked list
+struct ListNode {
+    int val;
+    struct ListNode* next;
+};
+
+// Function to create a new node
+struct ListNode* createNode(int val) {
+    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newNode->val = val;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to print a linked list in reverse order
+void printReverse(struct ListNode* head) {
+    // Create a stack to store nodes
+    struct ListNode** stack = NULL;
+    int size = 0;
+
+    // Traverse the linked list and push nodes onto the stack
+    struct ListNode* current = head;
+    while (current != NULL) {
+        stack = realloc(stack, (size + 1) * sizeof(struct ListNode*));
+        stack[size++] = current;
+        current = current->next;
+    }
+
+    // Pop nodes from the stack and print values in reverse order
+    while (size > 0) {
+        printf("%d\n", stack[--size]->val);
+    }
+
+    // Free the allocated memory for the stack
+    free(stack);
+}
+
+// Example Usage
+int main() {
+    // Creating the linked list 2 -> 4 -> 3
+    struct ListNode* head = createNode(2);
+    head->next = createNode(4);
+    head->next->next = createNode(3);
+
+    // Print the linked list in reverse order
+    printReverse(head);
+
+    // Freeing the allocated memory for the linked list
+    free(head->next->next);
+    free(head->next);
+    free(head);
+
+    return 0;
+}
