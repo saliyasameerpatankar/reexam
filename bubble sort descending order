@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+// Function to perform bubble sort in descending order
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] < arr[j + 1]) {
+                // Swap if the current element is smaller than the next one
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// Function to display an array
+void displayArray(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d", arr[i]);
+        if (i < n - 1) {
+            printf(",");
+        }
+    }
+    printf("\n");
+}
+
+// Example Usage
+int main() {
+    int numbers[] = {4, 7, 9, 1, 2};
+    int n = sizeof(numbers) / sizeof(numbers[0]);
+
+    // Display input
+    printf("Input: ");
+    displayArray(numbers, n);
+
+    // Perform bubble sort in descending order
+    bubbleSort(numbers, n);
+
+    // Display output
+    printf("Output: ");
+    displayArray(numbers, n);
+
+    return 0;
+}
