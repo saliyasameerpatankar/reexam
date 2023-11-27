@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure to represent a stack
+struct Stack {
+    int data;
+    struct Stack* next;
+};
+
+// Function to create a new stack node
+struct Stack* createNode(int data) {
+    struct Stack* newNode = (struct Stack*)malloc(sizeof(struct Stack));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to push an element onto a stack
+void push(struct Stack** top, int data) {
+    struct Stack* newNode = createNode(data);
+    newNode->next = *top;
+    *top = newNode;
+}
+
+// Function to pop an element from a stack
+int pop(struct Stack** top) {
+    if (*top == NULL) {
+        return -1; // Stack is empty
+    }
+    struct Stack* temp = *top;
+    *top = (*top)->next;
+    int poppedData = temp->data;
+    free(temp);
+    return poppedData;
+}
+
+// Structure to represent a queue using two stacks
+struct MyQueue {
+    struct Stack* stack1; // For enqueue (push)
+    struct Stack* stack2; // For dequeue (pop)
+};
+
+// Function to initialize a new queue
+struct MyQueue* createQueue() {
+    struct MyQueue* queue = (struct MyQueue*)malloc(sizeof(struct MyQueue));
+    queue->stack1 = NULL;
+    queue->stack2 = NULL;
+    return queue;
+}
+
+// Function to push an element onto the back of the queue
+void pushQueue(struct MyQueue* queue, int x) {
+    push(&(queue->stack1), x);
+}
+
+// Function to transfer elements from stack1 to stack2
+void transferStacks(struct MyQueue* queue) {
+    while (queue->stack1 != NULL) {
+        push(&(queue->stack2), pop(&(queue->stack1)));
+    }
+}
+
+// Function to pop an element from the front of the queue
+int popQueue(struct MyQueue* queue) {
+    if (queue->stack2 == NULL) {
+        // If stack2 is empty, transfer elements from stack1 to stack2
+        transferStacks(queue);
+    }
+    return pop(&(queue->stack2));
+}
+
+// Function to return the front element of the queue without removing it
+int peekQueue(struct MyQueue* queue) {
+    if (queue->stack2 == NULL) {
+        // If stack2 is empty, transfer elements from stack1 to stack2
+        transferStacks(queue);
+    }
+    if (queue->stack2 == NULL) {
+        return -1; // Queue is empty
+    }
+    return queue->stack2->data;
+}
+
+// Function to check if the queue is empty
+int isEmptyQueue(struct MyQueue* queue) {
+    return (queue->stack1 == NULL && queue->stack2 == NULL);
+}
+
+// Example Usage
+int main() {
+    struct MyQueue* myQueue = createQueue();
+    pushQueue(myQueue, 1);
+    pushQueue(myQueue, 2);
+    printf("%d\n", peekQueue(myQueue)); // Output: 1
+    printf("%d\n", popQueue(myQueue));  // Output: 1
+    printf("%d\n", isEmptyQueue(myQueue)); // Output: 0 (false)
+    return 0;
+}
